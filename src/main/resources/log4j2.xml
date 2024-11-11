@@ -3,7 +3,7 @@
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %highlight{[%p]} %c: %m%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %highlight{[%p]} %c{-2}: %m%n</pattern>
             </PatternLayout>
         </Console>
     </Appenders>
