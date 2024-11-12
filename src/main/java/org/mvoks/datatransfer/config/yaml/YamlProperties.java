@@ -13,4 +13,5 @@ import lombok.ToString;
 @ToString
 public class YamlProperties {
     private JettyProperties jetty;
+    private SecurityProperties security;
 }
