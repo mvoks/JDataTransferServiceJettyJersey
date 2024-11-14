@@ -1,6 +1,5 @@
 package org.mvoks.datatransfer.security;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
 import jakarta.annotation.Priority;
@@ -20,7 +19,7 @@ import org.mvoks.datatransfer.service.UserService;
 @Priority(Priorities.AUTHENTICATION)
 public class UserRequestFilter implements ContainerRequestFilter {
 
-    private static Set<String> PERMIT_ALL_FILTERED_PATH = Set.of(
+    private static final Set<String> PERMIT_ALL_FILTERED_PATH = Set.of(
         "/datatransfer/v1/auth/"
     );
     @Inject
@@ -29,7 +28,7 @@ public class UserRequestFilter implements ContainerRequestFilter {
     private UserService userService;
 
     @Override
-    public void filter(ContainerRequestContext containerRequestContext) throws IOException {
+    public void filter(ContainerRequestContext containerRequestContext) {
         final URI absolutePath = ((ContainerRequest) containerRequestContext).getAbsolutePath();
         if (isAllowPath(absolutePath.getPath())) {
             return;
