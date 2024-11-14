@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Set;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -23,7 +24,8 @@ public class UserRequestFilter implements ContainerRequestFilter {
         "/datatransfer/v1/auth/"
     );
     @Inject
-    private JwtService jwtService;
+    @Named("jwtAccessService")
+    private JwtService jwtAccessService;
     @Inject
     private UserService userService;
 
@@ -37,9 +39,9 @@ public class UserRequestFilter implements ContainerRequestFilter {
             final String authorization = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
             if (authorization != null && authorization.startsWith("Bearer ")) {
                 final String token = authorization.substring(7);
-                if (jwtService.validateToken(token)) {
+                if (jwtAccessService.validateToken(token)) {
                     final SecurityContext securityContext = containerRequestContext.getSecurityContext();
-                    final String username = jwtService.getUsername(token);
+                    final String username = jwtAccessService.getUsername(token);
                     final User user = userService.getByUsername(username);
                     final UserSecurityContext userSecurityContext = UserSecurityContext.builder()
                         .userPrincipal(
