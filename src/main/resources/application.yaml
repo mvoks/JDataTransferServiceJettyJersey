@@ -1,3 +1,8 @@
 jetty:
   host: "http://localhost"
   port: 8080
+security:
+  jwt:
+    secret:
+    accessInMinutes: 60
+    refreshInDays: 30

@@ -11,7 +11,7 @@ import org.jvnet.hk2.annotations.Service;
 import org.mvoks.datatransfer.config.BindingModule;
 import org.mvoks.datatransfer.config.yaml.JettyProperties;
 import org.mvoks.datatransfer.config.yaml.YamlService;
-import org.mvoks.datatransfer.rest.ResourceV1;
+import org.mvoks.datatransfer.security.UserRequestFilter;
 
 @Singleton
 @Service
@@ -27,8 +27,10 @@ public class DataTransferApplication {
             jettyProperties.getHost(), ":", Integer.toString(jettyProperties.getPort()), "/"
         );
         final ResourceConfig resourceConfig = new ResourceConfig();
+        resourceConfig.packages("org.mvoks.datatransfer.controller");
+        resourceConfig.packages("org.mvoks.datatransfer.exception");
+        resourceConfig.register(UserRequestFilter.class);
         resourceConfig.register(new BindingModule());
-        resourceConfig.register(ResourceV1.class);
         final Server server = JettyHttpContainerFactory.createServer(URI.create(baseURI), resourceConfig);
         log.info("The '{}' started", this.getClass().getSimpleName());
         log.info("Stop the application using CTRL+C");

@@ -14,7 +14,6 @@ import org.yaml.snakeyaml.Yaml;
 @Log4j2
 public class YamlService {
 
-    //private static final String YAML_FILE_PATH = "src/main/resources/application.yaml";
     private static final String YAML_FILE = "application.yaml";
     private YamlProperties yamlProperties;
 
@@ -28,7 +27,7 @@ public class YamlService {
                 .getResourceAsStream(YAML_FILE);
             yamlProperties = yaml.loadAs(inputStream, YamlProperties.class);
             inputStream.close();
-            log.info("Loaded application properties from yaml file");
+            log.info("Loaded application properties from yaml file\n{}", yamlProperties);
         } catch (final Exception ex) {
             log.error("Failed to load application properties from yaml file", ex);
         }

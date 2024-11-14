@@ -17,9 +17,9 @@
         <log4j.version>2.24.1</log4j.version>
         <lombok.version>1.18.34</lombok.version>
         <hk2.version>4.0.0-M3</hk2.version>
-        <!--<guice.version>7.0.0</guice.version>-->
-        <jackson.version>2.18.0</jackson.version>
         <snakeyaml.version>2.3</snakeyaml.version>
+        <jjwt.version>0.12.6</jjwt.version>
+        <password4j.version>1.8.2</password4j.version>
         <mockito.version>5.14.2</mockito.version>
         <jupiter.version>5.11.2</jupiter.version>
         <mvoks.lib.version>1.0</mvoks.lib.version>
@@ -31,20 +31,6 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-bom</artifactId>
                 <version>${log4j.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!--<dependency>
-                <groupId>com.google.inject</groupId>
-                <artifactId>guice-bom</artifactId>
-                <version>${guice.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>-->
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -97,10 +83,6 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -150,6 +132,30 @@
         </dependency>
 
         <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.password4j</groupId>
+            <artifactId>password4j</artifactId>
+            <version>${password4j.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
@@ -179,16 +185,16 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
                         <annotationProcessorPath>
                             <groupId>org.glassfish.hk2</groupId>
                             <artifactId>hk2-metadata-generator</artifactId>
                             <version>${hk2.version}</version>
                         </annotationProcessorPath>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
