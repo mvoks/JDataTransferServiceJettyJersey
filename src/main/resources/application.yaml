@@ -1,0 +1,3 @@
+jetty:
+  host: "http://localhost"
+  port: 8080

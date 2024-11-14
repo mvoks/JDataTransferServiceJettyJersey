@@ -16,10 +16,13 @@
         <project.skipTests>true</project.skipTests>
         <log4j.version>2.24.1</log4j.version>
         <lombok.version>1.18.34</lombok.version>
-        <guice.version>7.0.0</guice.version>
+        <hk2.version>4.0.0-M3</hk2.version>
+        <!--<guice.version>7.0.0</guice.version>-->
         <jackson.version>2.18.0</jackson.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
         <mockito.version>5.14.2</mockito.version>
         <jupiter.version>5.11.2</jupiter.version>
+        <mvoks.lib.version>1.0</mvoks.lib.version>
     </properties>
 
     <dependencyManagement>
@@ -31,13 +34,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
+            <!--<dependency>
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice-bom</artifactId>
                 <version>${guice.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
@@ -66,7 +69,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.glassfish.hk2</groupId>
+                <artifactId>hk2-bom</artifactId>
+                <version>${hk2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-bom</artifactId>
@@ -87,6 +96,15 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>-->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
         </dependency>
 
         <dependency>
@@ -117,6 +135,18 @@
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2-locator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2-metadata-generator</artifactId>
         </dependency>
 
         <dependency>
@@ -154,6 +184,11 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+                        <annotationProcessorPath>
+                            <groupId>org.glassfish.hk2</groupId>
+                            <artifactId>hk2-metadata-generator</artifactId>
+                            <version>${hk2.version}</version>
+                        </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
