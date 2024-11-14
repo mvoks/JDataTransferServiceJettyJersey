@@ -4,7 +4,8 @@ import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
 
 /**
- * Assembling project:
+ * Assembling project.
+ *
  * <pre>
  *  mvm clear
  *  mvn install
@@ -25,7 +26,6 @@ import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
  * </pre>
  */
 public class StartApplication {
-
 
     public static void main(String[] args) {
         final ServiceLocator serviceLocator = ServiceLocatorUtilities.createAndPopulateServiceLocator();
