@@ -13,4 +13,5 @@
     <suppress checks="FinalParameters"/>
     <suppress checks="NewlineAtEndOfFile"/>
     <suppress checks="LineLength"/>
+    <suppress checks="StaticVariableName"/>
 </suppressions>

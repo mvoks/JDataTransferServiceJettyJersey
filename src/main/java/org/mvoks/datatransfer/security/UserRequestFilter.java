@@ -39,7 +39,6 @@ public class UserRequestFilter implements ContainerRequestFilter {
             if (authorization != null && authorization.startsWith("Bearer ")) {
                 final String token = authorization.substring(7);
                 if (jwtService.validateToken(token)) {
-                    // https://stackoverflow.com/questions/42373642/how-to-authenticate-users-in-jersey
                     final SecurityContext securityContext = containerRequestContext.getSecurityContext();
                     final String username = jwtService.getUsername(token);
                     final User user = userService.getByUsername(username);
@@ -64,16 +63,13 @@ public class UserRequestFilter implements ContainerRequestFilter {
     }
 
     private boolean isAllowPath(String path) {
-        final boolean result = PERMIT_ALL_FILTERED_PATH.stream()
-            .filter(string -> {
+        return PERMIT_ALL_FILTERED_PATH.stream()
+            .anyMatch(string -> {
                 if (path.length() > string.length()) {
                     final String tempPath = path.substring(0, string.length()).toLowerCase();
                     return tempPath.startsWith(string);
                 }
                 return false;
-            })
-            .findFirst()
-            .isPresent();
-        return result;
+            });
     }
 }
