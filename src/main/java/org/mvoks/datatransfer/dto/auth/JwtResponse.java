@@ -1,4 +1,4 @@
-package org.mvoks.datatransfer.dto;
+package org.mvoks.datatransfer.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -8,7 +8,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
-import org.mvoks.datatransfer.dto.UserDto;
+import org.mvoks.datatransfer.dto.user.UserDto;
 import org.mvoks.datatransfer.entity.user.User;
 import org.mvoks.datatransfer.mapper.UserMapper;
 import org.mvoks.datatransfer.service.UserService;

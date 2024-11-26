@@ -1,9 +1,9 @@
 package org.mvoks.datatransfer.service;
 
 import org.jvnet.hk2.annotations.Contract;
-import org.mvoks.datatransfer.dto.JwtRefresh;
-import org.mvoks.datatransfer.dto.JwtRequest;
-import org.mvoks.datatransfer.dto.JwtResponse;
+import org.mvoks.datatransfer.dto.auth.JwtRefresh;
+import org.mvoks.datatransfer.dto.auth.JwtRequest;
+import org.mvoks.datatransfer.dto.auth.JwtResponse;
 
 @Contract
 public interface AuthService {
