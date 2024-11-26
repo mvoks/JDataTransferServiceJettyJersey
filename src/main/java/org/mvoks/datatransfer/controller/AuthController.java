@@ -7,9 +7,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
-import org.mvoks.datatransfer.dto.JwtRefresh;
-import org.mvoks.datatransfer.dto.JwtRequest;
-import org.mvoks.datatransfer.dto.JwtResponse;
+import org.mvoks.datatransfer.dto.auth.JwtRefresh;
+import org.mvoks.datatransfer.dto.auth.JwtRequest;
+import org.mvoks.datatransfer.dto.auth.JwtResponse;
 import org.mvoks.datatransfer.service.AuthService;
 
 @Path("/datatransfer/v1/auth")

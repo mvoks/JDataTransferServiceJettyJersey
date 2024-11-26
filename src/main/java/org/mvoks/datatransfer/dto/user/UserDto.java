@@ -1,4 +1,4 @@
-package org.mvoks.datatransfer.dto;
+package org.mvoks.datatransfer.dto.user;
 
 import java.util.Set;
 import lombok.Getter;
