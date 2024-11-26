@@ -4,6 +4,8 @@ import jakarta.inject.Singleton;
 import lombok.extern.log4j.Log4j2;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.mvoks.datatransfer.config.yaml.YamlService;
+import org.mvoks.datatransfer.mapper.UserMapper;
+import org.mvoks.datatransfer.mapper.UserMapperImpl;
 import org.mvoks.datatransfer.security.JwtAccessService;
 import org.mvoks.datatransfer.security.JwtHelper;
 import org.mvoks.datatransfer.security.JwtRefreshService;
@@ -25,6 +27,7 @@ public class BindingModule extends AbstractBinder {
         bind(JwtRefreshService.class).to(JwtService.class).named("jwtRefreshService");
         bind(AuthServiceImpl.class).to(AuthService.class);
         bind(UserServiceImpl.class).to(UserService.class);
+        bind(UserMapperImpl.class).to(UserMapper.class);
         log.info("Binding module complete");
     }
 }
