@@ -19,6 +19,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private String passwordConfirmation;
     private Set<Role> roles;
 
     @ToString.Include(name = "id")
