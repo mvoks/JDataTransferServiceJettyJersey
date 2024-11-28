@@ -21,6 +21,8 @@
         <snakeyaml.version>2.3</snakeyaml.version>
         <jjwt.version>0.12.6</jjwt.version>
         <password4j.version>1.8.2</password4j.version>
+        <hibernate.version>6.6.3.Final</hibernate.version>
+        <postgresql.version>42.7.4</postgresql.version>
         <mockito.version>5.14.2</mockito.version>
         <jupiter.version>5.11.2</jupiter.version>
         <mvoks.lib.version>1.0</mvoks.lib.version>
@@ -63,6 +65,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-bom</artifactId>
@@ -97,6 +100,7 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
@@ -167,6 +171,19 @@
             <groupId>com.password4j</groupId>
             <artifactId>password4j</artifactId>
             <version>${password4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+            <version>${postgresql.version}</version>
         </dependency>
 
         <dependency>
@@ -304,6 +321,19 @@
                 <configuration>
                     <mainClass>org.mvoks.datatransfer.StartApplication</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

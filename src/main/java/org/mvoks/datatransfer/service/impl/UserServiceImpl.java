@@ -1,20 +1,22 @@
 package org.mvoks.datatransfer.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import com.password4j.Password;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.jvnet.hk2.annotations.Service;
+import org.mvoks.datatransfer.dao.user.UserDao;
 import org.mvoks.datatransfer.entity.user.Role;
 import org.mvoks.datatransfer.entity.user.User;
 import org.mvoks.datatransfer.service.UserService;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserServiceImpl implements UserService {
 
-    private long id = 0;
-    private Map<Long, User> users = new HashMap<>();
+    private final UserDao userDao;
 
     @Override
     public User create(User user) {
@@ -23,26 +25,24 @@ public class UserServiceImpl implements UserService {
                 "Password and password confirmation don't match."
             );
         }
-        if (findByUsername(user.getUsername()) != null) {
-            throw new IllegalStateException("Username already exists");
+        if (userDao.findByUsername(user.getUsername()).isPresent()) {
+            throw new EntityExistsException("User already exists");
         }
-        user.setId(++id);
         user.setPassword(createPassword(user.getPassword()));
         user.setRoles(Set.of(Role.ROLE));
-        users.put(user.getId(), user);
-        return user;
+        return userDao.create(user);
     }
 
     @Override
     public User getById(final Long id) {
-        return Optional.of(users.get(id))
-            .orElseThrow(() -> new IllegalStateException("User doesn't exists"));
+        return userDao.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
     }
 
     @Override
     public User getByUsername(final String username) {
-        return Optional.of(findByUsername(username))
-            .orElseThrow(() -> new IllegalStateException("User doesn't exists"));
+        return userDao.findByUsername(username)
+            .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
     }
 
     @Override
@@ -50,42 +50,32 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(user.getPasswordConfirmation())) {
             throw new IllegalStateException("Password and password confirmation don't match.");
         }
-        final User userById = Optional.of(users.get(user.getId()))
-            .orElseThrow(() -> new IllegalStateException("User doesn't exists"));
+        final User userById = userDao.findById(user.getId())
+            .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
         if (!userById.getUsername().equals(user.getUsername())) {
             throw new IllegalStateException("Invalid username.");
         }
-        userById.setPassword(createPassword(user.getPassword()));
-        users.put(userById.getId(), userById);
-        return userById;
+        user.setPassword(createPassword(user.getPassword()));
+        return userDao.update(userById);
     }
 
     @Override
     public User update(User user) {
-        final User userById = Optional.of(users.get(user.getId()))
-            .orElseThrow(() -> new IllegalStateException("User doesn't exists"));
+        final User userById = userDao.findById(user.getId())
+            .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
         if (!userById.getUsername().equals(user.getUsername())) {
-            if (findByUsername(user.getUsername()) != null) {
-                throw new IllegalStateException("Username already exists");
+            if (userDao.findByUsername(user.getUsername()).isPresent()) {
+                throw new EntityExistsException("Username already exists");
             }
         }
         userById.setUsername(user.getUsername());
         userById.setRoles(user.getRoles());
-        users.put(userById.getId(), userById);
-        return userById;
+        return userDao.update(userById);
     }
 
     @Override
     public void delete(Long id) {
-        users.remove(id);
-    }
-
-    public User findByUsername(final String username) {
-        return users.entrySet().stream()
-            .map(Map.Entry::getValue)
-            .filter(user -> user.getUsername().equals(username))
-            .findAny()
-            .orElse(null);
+        userDao.delete(id);
     }
 
     private String createPassword(String password) {
