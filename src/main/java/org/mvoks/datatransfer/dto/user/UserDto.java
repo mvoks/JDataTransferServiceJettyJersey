@@ -10,9 +10,7 @@ import org.mvoks.datatransfer.entity.user.Role;
 @Setter
 @ToString
 public class UserDto {
-
     private Long id;
     private String username;
-    private String password;
     private Set<Role> roles;
 }

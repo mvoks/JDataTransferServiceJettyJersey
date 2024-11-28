@@ -10,13 +10,32 @@ import lombok.RequiredArgsConstructor;
 import org.mvoks.datatransfer.dto.auth.JwtRefresh;
 import org.mvoks.datatransfer.dto.auth.JwtRequest;
 import org.mvoks.datatransfer.dto.auth.JwtResponse;
+import org.mvoks.datatransfer.dto.user.UserDto;
+import org.mvoks.datatransfer.dto.user.UserRegistrationDto;
+import org.mvoks.datatransfer.entity.user.User;
+import org.mvoks.datatransfer.mapper.UserMapper;
+import org.mvoks.datatransfer.mapper.UserRegistrationMapper;
 import org.mvoks.datatransfer.service.AuthService;
+import org.mvoks.datatransfer.service.UserService;
 
 @Path("/datatransfer/v1/auth")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
+    private final UserMapper userMapper;
+    private final UserRegistrationMapper userRegistrationMapper;
+
+    @POST
+    @Path("/register")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserDto register(final UserRegistrationDto userRegistrationDto) {
+        final User user = userRegistrationMapper.toEntity(userRegistrationDto);
+        final User createdUser = userService.create(user);
+        return userMapper.toDto(createdUser);
+    }
 
     @POST
     @Path("/login")
