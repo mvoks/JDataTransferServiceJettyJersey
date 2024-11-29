@@ -15,7 +15,7 @@ public class UserDao extends AbstractPersistDao<User, Long> {
             final TypedQuery<User> typedQuery = getEntityManager()
                 .createNamedQuery("user.findByUsername", User.class)
                 .setParameter("username", username);
-            return Optional.of(typedQuery.getSingleResult());
+            return Optional.ofNullable(typedQuery.getSingleResult());
         } catch (PersistenceException ex) {
             // Ignored
         }
