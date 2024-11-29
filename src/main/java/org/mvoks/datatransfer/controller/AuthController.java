@@ -17,11 +17,14 @@ import org.mvoks.datatransfer.mapper.UserMapper;
 import org.mvoks.datatransfer.mapper.UserRegistrationMapper;
 import org.mvoks.datatransfer.service.AuthService;
 import org.mvoks.datatransfer.service.UserService;
+import org.mvoks.datatransfer.validation.ActionCreate;
+import org.mvoks.datatransfer.validation.Validated;
 
 @Path("/datatransfer/v1/auth")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class AuthController {
 
+    private final Validated validated;
     private final AuthService authService;
     private final UserService userService;
     private final UserMapper userMapper;
@@ -32,6 +35,7 @@ public class AuthController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public UserDto register(final UserRegistrationDto userRegistrationDto) {
+        validated.validate(userRegistrationDto, ActionCreate.class);
         final User user = userRegistrationMapper.toEntity(userRegistrationDto);
         final User createdUser = userService.create(user);
         return userMapper.toDto(createdUser);
@@ -42,6 +46,7 @@ public class AuthController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public JwtResponse login(final JwtRequest jwtRequest) {
+        validated.validate(jwtRequest);
         return authService.login(jwtRequest);
     }
 
@@ -50,6 +55,7 @@ public class AuthController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public JwtResponse refresh(final JwtRefresh jwtRefresh) {
+        validated.validate(jwtRefresh);
         return authService.refresh(jwtRefresh);
     }
 }

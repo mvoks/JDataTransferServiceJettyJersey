@@ -3,10 +3,12 @@ package org.mvoks.datatransfer.config;
 import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.validation.Validator;
 import lombok.extern.log4j.Log4j2;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.mvoks.datatransfer.config.em.FactoryEntityManager;
 import org.mvoks.datatransfer.config.em.FactoryEntityManagerFactory;
+import org.mvoks.datatransfer.config.validator.FactoryValidator;
 import org.mvoks.datatransfer.config.yaml.YamlService;
 import org.mvoks.datatransfer.dao.user.UserDao;
 import org.mvoks.datatransfer.mapper.UserMapper;
@@ -23,6 +25,7 @@ import org.mvoks.datatransfer.service.AuthService;
 import org.mvoks.datatransfer.service.UserService;
 import org.mvoks.datatransfer.service.impl.AuthServiceImpl;
 import org.mvoks.datatransfer.service.impl.UserServiceImpl;
+import org.mvoks.datatransfer.validation.Validated;
 
 @Log4j2
 public class BindingModule extends AbstractBinder {
@@ -35,6 +38,8 @@ public class BindingModule extends AbstractBinder {
         bind(JwtAccessService.class).to(JwtService.class).named("jwtAccessService");
         bind(JwtRefreshService.class).to(JwtService.class).named("jwtRefreshService");
         bind(AuthServiceImpl.class).to(AuthService.class);
+        bindFactory(FactoryValidator.class).to(Validator.class).in(Singleton.class);
+        bind(Validated.class).to(Validated.class).in(Singleton.class);
         bindFactory(FactoryEntityManagerFactory.class).to(EntityManagerFactory.class).in(Singleton.class);
         bindFactory(FactoryEntityManager.class).to(EntityManager.class);
         bind(UserDao.class).to(UserDao.class);

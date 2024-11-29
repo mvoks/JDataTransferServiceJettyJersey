@@ -9,6 +9,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import org.mvoks.datatransfer.dto.user.UserDto;
 import org.mvoks.datatransfer.dto.user.UserPasswordUpdateDto;
@@ -16,14 +17,18 @@ import org.mvoks.datatransfer.entity.user.User;
 import org.mvoks.datatransfer.mapper.UserMapper;
 import org.mvoks.datatransfer.mapper.UserPasswordUpdateMapper;
 import org.mvoks.datatransfer.service.UserService;
+import org.mvoks.datatransfer.validation.ActionUpdate;
+import org.mvoks.datatransfer.validation.Validated;
 
 @Path("/datatransfer/v1/users")
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserController {
 
+    private final Validated validated;
     private final UserService userService;
     private final UserMapper userMapper;
     private final UserPasswordUpdateMapper userPasswordUpdateMapper;
+    private final SecurityContext securityContext;
 
     @GET
     @Path("/id/{id}")
@@ -48,6 +53,7 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public UserDto updatePassword(final UserPasswordUpdateDto userPasswordUpdateDto) {
+        validated.validate(userPasswordUpdateDto, ActionUpdate.class);
         final User user = userPasswordUpdateMapper.toEntity(userPasswordUpdateDto);
         final User updatedUser = userService.updatePassword(user);
         return userMapper.toDto(updatedUser);
@@ -57,6 +63,7 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public UserDto update(final UserDto userDto) {
+        validated.validate(userDto, ActionUpdate.class);
         final User user = userMapper.toEntity(userDto);
         final User updatedUser = userService.update(user);
         return userMapper.toDto(updatedUser);

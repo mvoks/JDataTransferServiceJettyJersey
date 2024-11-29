@@ -15,7 +15,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
     public Response toResponse(ConstraintViolationException ex) {
         final ExceptionEntity exceptionEntity = ExceptionEntity.builder()
             .message("Validation error.")
-            .details(ex.getMessage())
+            //.details(ex.getMessage())
             .errors(
                 ex.getConstraintViolations().stream()
                     .collect(Collectors.toMap(
