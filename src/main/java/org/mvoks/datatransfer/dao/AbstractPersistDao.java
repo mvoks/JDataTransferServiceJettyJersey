@@ -34,7 +34,7 @@ public abstract class AbstractPersistDao<T extends Serializable, ID extends Seri
 
     @Override
     public Optional<T> findById(ID id) {
-        return Optional.of(entityManager.find(getObjectClass(), id));
+        return Optional.ofNullable(entityManager.find(getObjectClass(), id));
     }
 
     @Override
@@ -52,15 +52,11 @@ public abstract class AbstractPersistDao<T extends Serializable, ID extends Seri
     }
 
     @Override
-    public void delete(ID id) {
-        final Optional<T> existing = findById(id);
-        if (!existing.isPresent()) {
-            return;
-        }
+    public void delete(T id) {
         final EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            entityManager.remove(existing.get());
+            entityManager.remove(id);
             transaction.commit();
         } catch (PersistenceException ex) {
             transaction.rollback();

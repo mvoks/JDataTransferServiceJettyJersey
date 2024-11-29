@@ -12,6 +12,8 @@ import org.mvoks.datatransfer.dto.auth.JwtRefresh;
 import org.mvoks.datatransfer.dto.auth.JwtRequest;
 import org.mvoks.datatransfer.dto.auth.JwtResponse;
 import org.mvoks.datatransfer.entity.user.User;
+import org.mvoks.datatransfer.exception.AuthenticationException;
+import org.mvoks.datatransfer.exception.ValidationErrorException;
 import org.mvoks.datatransfer.security.JwtService;
 import org.mvoks.datatransfer.service.AuthService;
 import org.mvoks.datatransfer.service.UserService;
@@ -33,14 +35,14 @@ public class AuthServiceImpl implements AuthService {
         if (verified) {
             return createJwtResponse(user);
         }
-        throw new RuntimeException("Invalid username or password");
+        throw new AuthenticationException("Invalid username or password");
     }
 
     @Override
     public JwtResponse refresh(final JwtRefresh jwtRefresh) {
         final String token = jwtRefresh.getToken();
         if (!jwtRefreshService.validateToken(token)) {
-            throw new RuntimeException("Invalid refresh token");
+            throw new ValidationErrorException("Invalid refresh token");
         }
         final Long userId = jwtRefreshService.getUserId(token);
         final User user = userService.getById(userId);

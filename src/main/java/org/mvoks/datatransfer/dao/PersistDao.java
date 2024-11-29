@@ -11,5 +11,5 @@ public interface PersistDao<T extends Serializable, ID extends Serializable> {
 
     T update(T entity);
 
-    void delete(ID id);
+    void delete(T id);
 }

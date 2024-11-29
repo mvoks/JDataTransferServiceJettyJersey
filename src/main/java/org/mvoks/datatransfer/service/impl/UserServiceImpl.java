@@ -10,6 +10,7 @@ import org.jvnet.hk2.annotations.Service;
 import org.mvoks.datatransfer.dao.user.UserDao;
 import org.mvoks.datatransfer.entity.user.Role;
 import org.mvoks.datatransfer.entity.user.User;
+import org.mvoks.datatransfer.exception.ValidationErrorException;
 import org.mvoks.datatransfer.service.UserService;
 
 @Service
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (!user.getPassword().equals(user.getPasswordConfirmation())) {
-            throw new IllegalStateException(
+            throw new ValidationErrorException(
                 "Password and password confirmation don't match."
             );
         }
@@ -48,14 +49,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updatePassword(User user) {
         if (!user.getPassword().equals(user.getPasswordConfirmation())) {
-            throw new IllegalStateException("Password and password confirmation don't match.");
+            throw new ValidationErrorException(
+                "Password and password confirmation don't match."
+            );
         }
         final User userById = userDao.findById(user.getId())
             .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
         if (!userById.getUsername().equals(user.getUsername())) {
-            throw new IllegalStateException("Invalid username.");
+            throw new ValidationErrorException("Invalid username.");
         }
-        user.setPassword(createPassword(user.getPassword()));
+        userById.setPassword(createPassword(user.getPassword()));
         return userDao.update(userById);
     }
 
@@ -75,7 +78,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        userDao.delete(id);
+        final User userById = userDao.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("User doesn't exists"));
+        userDao.delete(userById);
     }
 
     private String createPassword(String password) {

@@ -6,16 +6,16 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class AuthenticationExceptionMapper implements ExceptionMapper<AuthenticationException> {
+public class ValidationErrorExceptionMapper implements ExceptionMapper<ValidationErrorException> {
 
     @Override
-    public Response toResponse(AuthenticationException ex) {
+    public Response toResponse(ValidationErrorException ex) {
         final ExceptionEntity exceptionEntity = ExceptionEntity.builder()
             .message(ex.getMessage())
             .details(ex.getDetail())
             .build();
         return Response
-            .status(Response.Status.UNAUTHORIZED)
+            .status(Response.Status.BAD_REQUEST)
             .type(MediaType.APPLICATION_JSON)
             .entity(exceptionEntity)
             .build();

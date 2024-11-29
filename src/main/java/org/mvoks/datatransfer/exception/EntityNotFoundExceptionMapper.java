@@ -1,21 +1,22 @@
 package org.mvoks.datatransfer.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class AuthenticationExceptionMapper implements ExceptionMapper<AuthenticationException> {
+public class EntityNotFoundExceptionMapper implements ExceptionMapper<EntityNotFoundException> {
 
     @Override
-    public Response toResponse(AuthenticationException ex) {
+    public Response toResponse(EntityNotFoundException ex) {
         final ExceptionEntity exceptionEntity = ExceptionEntity.builder()
-            .message(ex.getMessage())
-            .details(ex.getDetail())
+            .message("Entity not found.")
+            .details(ex.getMessage())
             .build();
         return Response
-            .status(Response.Status.UNAUTHORIZED)
+            .status(Response.Status.NOT_FOUND)
             .type(MediaType.APPLICATION_JSON)
             .entity(exceptionEntity)
             .build();
